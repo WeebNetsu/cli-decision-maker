@@ -2,12 +2,11 @@
 #include <cstdlib> //import to use rand() function
 #include <ctime>
 #include <vector>
-#include <algorithm> // to use std::all_of
 
 #include "CommonMethods.hpp"
 
 // https://www.geeksforgeeks.org/insertion-sort/
-std::vector<int> insertionSort(std::vector<int> arr1, std::vector<std::string> &arr2)
+void sortValues(std::vector<int> &arr1, std::vector<std::string> &arr2)
 {
     int i, key1, j;
     std::string key2;
@@ -27,13 +26,15 @@ std::vector<int> insertionSort(std::vector<int> arr1, std::vector<std::string> &
         arr1.at(j + 1) = key1;
         arr2.at(j + 1) = key2;
     }
-
-    return arr1;
 }
 
 int main(int argc, char const *argv[])
 {
-    srand(time(0));
+    if (argc <= 2)
+    {
+        std::cout << "Too few parameters added" << std::endl;
+        return 0;
+    }
 
     std::vector<std::string> options;
 
@@ -58,7 +59,7 @@ int main(int argc, char const *argv[])
             }
             else
             {
-                std::cout << "No number after '-n', error." << std::endl;
+                std::cout << "No positive number after '-n', error." << std::endl;
                 return 0;
             }
         }
@@ -78,6 +79,7 @@ int main(int argc, char const *argv[])
         values.push_back(0);
     }
 
+    srand(time(0));
     for (int i = 0; i < amount; i++)
     {
         int val = 1 + (rand() % options.size()); // random number between 1 and length of option (including both)
@@ -85,7 +87,7 @@ int main(int argc, char const *argv[])
         values.at(val - 1) += 1;
     }
 
-    values = insertionSort(values, options);
+    sortValues(values, options);
     for (int i = values.size() - 1; i >= 0; i--)
     {
         std::cout << options.at(i) << ": " << values.at(i) << std::endl;
